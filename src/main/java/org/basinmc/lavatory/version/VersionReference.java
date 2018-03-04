@@ -38,8 +38,21 @@ public final class VersionReference {
   private final OffsetDateTime modificationTime;
   private final URL url;
 
+  public VersionReference(
+      @NonNull String id,
+      @NonNull VersionType type,
+      @NonNull OffsetDateTime releaseTime,
+      @NonNull OffsetDateTime modificationTime,
+      @NonNull URL url) {
+    this.id = id;
+    this.type = type;
+    this.releaseTime = releaseTime;
+    this.modificationTime = modificationTime;
+    this.url = url;
+  }
+
   @JsonCreator
-  private VersionReference(
+  protected VersionReference(
       @NonNull @JsonProperty(value = "id", required = true) String id,
       @NonNull @JsonProperty(value = "type", required = true) String type,
       @NonNull @JsonProperty(value = "releaseTime", required = true) String releaseTime,

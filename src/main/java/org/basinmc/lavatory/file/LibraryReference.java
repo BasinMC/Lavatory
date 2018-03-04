@@ -46,6 +46,24 @@ public class LibraryReference extends AbstractRuleControlledResource {
   private final ExtractionConfiguration extractionConfiguration;
 
   public LibraryReference(
+      @NonNull String name,
+      @Nullable LibraryArtifact linuxNativesArtifact,
+      @Nullable LibraryArtifact macNativesArtifact,
+      @Nullable LibraryArtifact windowsNativesArtifact,
+      @NonNull DownloadMap downloads,
+      @Nullable ExtractionConfiguration extractionConfiguration,
+      @Nullable Set<Rule> rules) {
+    super(rules);
+    this.name = name;
+    this.linuxNativesArtifact = linuxNativesArtifact;
+    this.macNativesArtifact = macNativesArtifact;
+    this.windowsNativesArtifact = windowsNativesArtifact;
+    this.downloads = downloads;
+    this.extractionConfiguration = extractionConfiguration;
+  }
+
+  @JsonCreator
+  protected LibraryReference(
       @NonNull @JsonProperty(value = "name", required = true) String name,
       @NonNull @JsonProperty(value = "downloads", required = true) DownloadMap downloads,
       @Nullable @JsonProperty("natives") Map<String, String> classifierMap,
@@ -213,7 +231,7 @@ public class LibraryReference extends AbstractRuleControlledResource {
     private final Set<String> includes;
 
     @JsonCreator
-    private ExtractionConfiguration(
+    public ExtractionConfiguration(
         @Nullable @JsonProperty("exclude") Set<String> excludes,
         @Nullable @JsonProperty("include") Set<String> includes) {
       this.excludes = excludes == null ? Collections.emptySet() : excludes;

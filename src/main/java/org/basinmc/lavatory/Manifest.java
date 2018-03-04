@@ -27,6 +27,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -53,8 +54,17 @@ public final class Manifest {
   private final VersionReference latestSnapshot;
   private final Map<String, VersionReference> versionMap;
 
+  public Manifest(
+      @NonNull VersionReference latestStable,
+      @NonNull VersionReference latestSnapshot,
+      @NonNull Map<String, VersionReference> versionMap) {
+    this.latestStable = latestStable;
+    this.latestSnapshot = latestSnapshot;
+    this.versionMap = new HashMap<>(versionMap);
+  }
+
   @JsonCreator
-  private Manifest(
+  protected Manifest(
       @NonNull @JsonProperty(value = "latest", required = true) Map<String, String> latestVersions,
       @NonNull @JsonProperty(value = "versions", required = true) Set<VersionReference> references) {
     this.versionMap = references.stream()
