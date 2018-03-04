@@ -1,0 +1,15 @@
+{
+  "latest": {
+    "snapshot": "18w09a",
+    "release": "1.12.2"
+  },
+  "versions": [
+    {
+      "id": "1.12.2",
+      "type": "release",
+      "time": "2018-02-15T16:26:45+00:00",
+      "releaseTime": "2017-09-18T08:39:46+00:00",
+      "url": "https:\/\/launchermeta.mojang.com\/mc\/game\/cf72a57ff499d6d9ade870b2143ee54958bd33ef\/1.12.2.json"
+    }
+  ]
+}
