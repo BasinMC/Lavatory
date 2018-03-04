@@ -44,7 +44,7 @@ public final class VersionReference {
       @NonNull @JsonProperty(value = "type", required = true) String type,
       @NonNull @JsonProperty(value = "releaseTime", required = true) String releaseTime,
       @NonNull @JsonProperty(value = "time", required = true) String modificationTime,
-      @NonNull URL url) {
+      @NonNull @JsonProperty(value = "url", required = true) URL url) {
     this.id = id;
     this.url = url;
 
