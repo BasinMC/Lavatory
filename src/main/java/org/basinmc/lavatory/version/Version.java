@@ -70,7 +70,7 @@ public class Version implements RuleControlledResourceContainer {
   private final Download windowsServerDownload;
   private final String assets;
   private final AssetIndexReference assetIndex;
-  private final Set<LibraryReference> libraries;
+  private final Map<String, LibraryReference> libraries;
 
   private final LoggerConfiguration clientLoggerConfiguration;
 
@@ -102,7 +102,17 @@ public class Version implements RuleControlledResourceContainer {
     this.windowsServerDownload = windowsServerDownload;
     this.assets = assets;
     this.assetIndex = assetIndex;
-    this.libraries = new HashSet<>(libraries);
+    this.libraries = libraries.stream()
+        .collect(Collectors.toMap(
+            LibraryReference::getName,
+            (l) -> l,
+            (a, b) -> {
+              int priorityA = a.calculatePriority();
+              int priorityB = b.calculatePriority();
+
+              return priorityA >= priorityB ? a : b;
+            }
+        ));
     this.clientLoggerConfiguration = clientLoggerConfiguration;
   }
 
@@ -130,7 +140,17 @@ public class Version implements RuleControlledResourceContainer {
     this.mainClass = mainClass;
     this.assets = assets;
     this.assetIndex = assetIndex;
-    this.libraries = libraries;
+    this.libraries = libraries.stream()
+        .collect(Collectors.toMap(
+            LibraryReference::getName,
+            (l) -> l,
+            (a, b) -> {
+              int priorityA = a.calculatePriority();
+              int priorityB = b.calculatePriority();
+
+              return priorityA >= priorityB ? a : b;
+            }
+        ));
     this.clientLoggerConfiguration =
         loggerConfigurations == null ? null : loggerConfigurations.get("client");
 
@@ -306,6 +326,17 @@ public class Version implements RuleControlledResourceContainer {
   }
 
   /**
+   * Retrieves a specific library based on its name from within this version's dependencies.
+   *
+   * @param name a library name (including its version).
+   * @return a library reference or, if none matches, an empty optional.
+   */
+  @NonNull
+  public Optional<LibraryReference> getLibrary(@NonNull String name) {
+    return Optional.ofNullable(this.libraries.get(name));
+  }
+
+  /**
    * <p>Retrieves a set of libraries on which this game version relies.</p>
    *
    * <p>Note that these libraries typically only apply to the server archive as the required
@@ -315,7 +346,7 @@ public class Version implements RuleControlledResourceContainer {
    */
   @NonNull
   public Set<LibraryReference> getLibraries() {
-    return Collections.unmodifiableSet(this.libraries);
+    return Collections.unmodifiableSet(new HashSet<>(this.libraries.values()));
   }
 
   /**
@@ -394,7 +425,7 @@ public class Version implements RuleControlledResourceContainer {
         this.windowsServerDownload,
         this.assets,
         this.assetIndex,
-        this.libraries.stream()
+        this.libraries.values().stream()
             .filter((l) -> l.evaluate(ctx))
             .collect(Collectors.toSet()),
         this.clientLoggerConfiguration
