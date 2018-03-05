@@ -23,7 +23,7 @@
   <!-- Artifact Information -->
   <groupId>org.basinmc</groupId>
   <artifactId>lavatory</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -85,6 +85,11 @@
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.9.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.9.4</version>
     </dependency>
@@ -92,11 +97,6 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>2.9.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -122,13 +122,6 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>2.15.0</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.25</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -170,9 +163,38 @@
         <version>3.7.0</version>
 
         <configuration>
+          <jdkToolchain>
+            <version>9</version>
+          </jdkToolchain>
+
+          <release>8</release>
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <release>9</release>
+              <source>9</source>
+              <target>9</target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-compile</id>
+
+            <goals>
+              <goal>compile</goal>
+            </goals>
+
+            <configuration>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -212,4 +234,31 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>deployment</id>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

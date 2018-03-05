@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.io.IOException;
@@ -359,7 +358,7 @@ public class Version implements RuleControlledResourceContainer {
   @NonNull
   public static Version read(@NonNull InputStream inputStream) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
+    mapper.findAndRegisterModules();
     return mapper.readValue(inputStream, Version.class);
   }
 
@@ -387,7 +386,7 @@ public class Version implements RuleControlledResourceContainer {
   @NonNull
   public static Version read(@NonNull Reader reader) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
+    mapper.findAndRegisterModules();
     return mapper.readValue(reader, Version.class);
   }
 
