@@ -81,21 +81,15 @@ public class LibraryReference extends AbstractRuleControlledResource implements
 
     String classifier = classifierMap.get("linux");
     this.linuxNativesArtifact =
-        classifier != null ? Optional.ofNullable(this.downloads.classifiers.get(classifier))
-            .orElseThrow(() -> new IllegalArgumentException(
-                "Illegal native artifact for linux: Artifact is missing")) : null;
+        classifier != null ? this.downloads.classifiers.get(classifier) : null;
 
     classifier = classifierMap.get("osx");
     this.macNativesArtifact =
-        classifier != null ? Optional.ofNullable(this.downloads.classifiers.get(classifier))
-            .orElseThrow(() -> new IllegalArgumentException(
-                "Illegal native artifact for osx: Artifact is missing")) : null;
+        classifier != null ? this.downloads.classifiers.get(classifier) : null;
 
     classifier = classifierMap.get("windows");
     this.windowsNativesArtifact =
-        classifier != null ? Optional.ofNullable(this.downloads.classifiers.get(classifier))
-            .orElseThrow(() -> new IllegalArgumentException(
-                "Illegal native artifact for windows: Artifact is missing")) : null;
+        classifier != null ? this.downloads.classifiers.get(classifier) : null;
   }
 
   /**
