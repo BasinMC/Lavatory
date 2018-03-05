@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.basinmc.lavatory.ResolverContext;
 import org.basinmc.lavatory.rule.Rule.Deserializer;
@@ -61,6 +62,30 @@ public class Rule {
     }
 
     return Action.negate(this.action);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    Rule rule = (Rule) o;
+    return this.action == rule.action &&
+        Objects.equals(this.conditions, rule.conditions);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.action, this.conditions);
   }
 
   /**
