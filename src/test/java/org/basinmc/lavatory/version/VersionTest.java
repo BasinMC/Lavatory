@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.basinmc.lavatory.ResolverContext;
-import org.basinmc.lavatory.file.AssetIndexReference;
+import org.basinmc.lavatory.asset.AssetIndexReference;
 import org.basinmc.lavatory.file.Download;
 import org.basinmc.lavatory.file.LibraryReference;
 import org.basinmc.lavatory.file.LoggerConfiguration;

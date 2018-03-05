@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.basinmc.lavatory.file;
+package org.basinmc.lavatory.asset;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.net.URL;
 import java.util.Objects;
+import org.basinmc.lavatory.file.Download;
 
 /**
  * Represents a reference to an asset index which effectively identifies where to retrieve game
