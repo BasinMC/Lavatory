@@ -44,7 +44,7 @@ public class AssetIndexTest {
       Assert.assertTrue(index.getObject("minecraft/sounds/entity/rabbit/attack2.ogg").isPresent());
 
       AssetObject object = index.getObject("minecraft/sounds/mob/stray/death2.ogg").get();
-      Assert.assertEquals("d48940aeab2d4068bd157e6810406c882503a813", object.getHash());
+      Assert.assertEquals("d48940aeab2d4068bd157e6810406c882503a813", object.getSha1());
       Assert.assertEquals(18817, object.getSize());
       Assert.assertEquals(
           "https://resources.download.minecraft.net/d4/d48940aeab2d4068bd157e6810406c882503a813",
