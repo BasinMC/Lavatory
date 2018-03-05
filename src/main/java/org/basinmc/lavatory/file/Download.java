@@ -19,7 +19,14 @@ package org.basinmc.lavatory.file;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 /**
@@ -41,6 +48,25 @@ public class Download {
     this.sha1 = sha1;
     this.size = size;
     this.url = url;
+  }
+
+  /**
+   * Downloads the file from the server and writes it to the specified target file.
+   *
+   * @param target a target file.
+   * @throws IOException when the server is unreachable, responds with an error code, the connection
+   * is interrupted or when writing to the file fails.
+   */
+  public void fetch(@NonNull Path target) throws IOException {
+    try (FileChannel channel = FileChannel
+        .open(target, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)) {
+      try (InputStream inputStream = this.url.openStream()) {
+        try (ReadableByteChannel inputChannel = Channels.newChannel(inputStream)) {
+          channel.transferFrom(inputChannel, 0, Long.MAX_VALUE);
+        }
+      }
+    }
   }
 
   /**

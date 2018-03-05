@@ -19,6 +19,8 @@ package org.basinmc.lavatory.version;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -78,6 +80,20 @@ public final class VersionReference {
           .parse(modificationTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     } catch (DateTimeParseException ex) {
       throw new IllegalArgumentException("Illegal modificationTime: " + modificationTime, ex);
+    }
+  }
+
+  /**
+   * Retrieves the complete version document from the server.
+   *
+   * @return a parsed version document.
+   * @throws IOException when the server is not accessible, the server responds with an error code
+   * or when the data is malformed.
+   */
+  @NonNull
+  public Version fetch() throws IOException {
+    try (InputStream inputStream = this.url.openStream()) {
+      return Version.read(inputStream);
     }
   }
 

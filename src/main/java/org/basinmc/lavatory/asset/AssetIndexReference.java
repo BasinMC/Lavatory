@@ -19,6 +19,8 @@ package org.basinmc.lavatory.asset;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
 import org.basinmc.lavatory.file.Download;
@@ -44,6 +46,20 @@ public class AssetIndexReference extends Download {
     super(sha1, size, url);
     this.id = id;
     this.totalSize = totalSize;
+  }
+
+  /**
+   * Fetches the full asset index from the server and parses its contents.
+   *
+   * @return a parsed asset index.
+   * @throws IOException when the server is unreachable, responds with an error code or when the
+   * data is malformed.
+   */
+  @NonNull
+  public AssetIndex fetch() throws IOException {
+    try (InputStream inputStream = this.getUrl().openStream()) {
+      return AssetIndex.read(inputStream);
+    }
   }
 
   /**
