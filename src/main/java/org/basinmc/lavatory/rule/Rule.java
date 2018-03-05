@@ -55,7 +55,7 @@ public class Rule {
    * to is to be included.
    *
    * @param ctx a context.
-   * @return {@link Action#ALLOW} when inclusion is expected, {@link Action#DENY} otherwise.
+   * @return {@link Action#ALLOW} when inclusion is expected, {@link Action#DISALLOW} otherwise.
    */
   public Action evaluate(@NonNull ResolverContext ctx) {
     if (this.conditions.stream().allMatch((c) -> c.evaluate(ctx))) {
@@ -117,7 +117,7 @@ public class Rule {
      * <p>Indicates that the value to which this rule is attached may <strong>NOT</strong> be
      * included in the final result.</p>
      */
-    DENY;
+    DISALLOW;
 
     /**
      * Retrieves the negated value of the supplied action.
@@ -128,7 +128,7 @@ public class Rule {
     @NonNull
     public static Action negate(@NonNull Action action) {
       if (action == ALLOW) {
-        return DENY;
+        return DISALLOW;
       }
 
       return ALLOW;
