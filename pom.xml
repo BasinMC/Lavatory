@@ -85,6 +85,11 @@
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.9.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.9.4</version>
     </dependency>
@@ -158,9 +163,38 @@
         <version>3.7.0</version>
 
         <configuration>
+          <jdkToolchain>
+            <version>9</version>
+          </jdkToolchain>
+
+          <release>8</release>
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <release>9</release>
+              <source>9</source>
+              <target>9</target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>base-compile</id>
+
+            <goals>
+              <goal>compile</goal>
+            </goals>
+
+            <configuration>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
