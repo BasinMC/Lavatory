@@ -18,17 +18,16 @@ package org.basinmc.lavatory.asset;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.umd.cs.findbugs.annotations.NonNull;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
+import org.basinmc.lavatory.file.Download;
 
 /**
  * Represents a single asset object of an arbitrary file type within an index.
  *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
-public class AssetObject {
+public class AssetObject extends Download {
 
   /**
    * <p>Defines the asset object URL format which indicates where a specific asset can be
@@ -47,61 +46,14 @@ public class AssetObject {
    */
   public static final String ASSET_URL_FORMAT = "https://resources.download.minecraft.net/%s/%s";
 
-  private final String hash;
-  private final long size;
-  private final URL url;
-
   public AssetObject(String hash, long size, URL url) {
-    this.hash = hash;
-    this.size = size;
-    this.url = url;
+    super(hash, size, url);
   }
 
   @JsonCreator
   protected AssetObject(
       @JsonProperty(value = "hash", required = true) String hash,
       @JsonProperty(value = "size", required = true) long size) throws MalformedURLException {
-    this.hash = hash;
-    this.size = size;
-    this.url = new URL(String.format(ASSET_URL_FORMAT, hash.substring(0, 2), hash));
-  }
-
-  @NonNull
-  public String getHash() {
-    return this.hash;
-  }
-
-  public long getSize() {
-    return this.size;
-  }
-
-  @NonNull
-  public URL getUrl() {
-    return this.url;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || this.getClass() != o.getClass()) {
-      return false;
-    }
-    AssetObject that = (AssetObject) o;
-    return this.size == that.size &&
-        Objects.equals(this.hash, that.hash) &&
-        Objects.equals(this.url, that.url);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.hash, this.size, this.url);
+    this(hash, size, new URL(String.format(ASSET_URL_FORMAT, hash.substring(0, 2), hash)));
   }
 }
