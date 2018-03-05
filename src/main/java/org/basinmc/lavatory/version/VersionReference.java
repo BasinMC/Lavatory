@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
 /**
@@ -57,8 +55,8 @@ public final class VersionReference {
   protected VersionReference(
       @NonNull @JsonProperty(value = "id", required = true) String id,
       @NonNull @JsonProperty(value = "type", required = true) String type,
-      @NonNull @JsonProperty(value = "releaseTime", required = true) String releaseTime,
-      @NonNull @JsonProperty(value = "time", required = true) String modificationTime,
+      @NonNull @JsonProperty(value = "releaseTime", required = true) OffsetDateTime releaseTime,
+      @NonNull @JsonProperty(value = "time", required = true) OffsetDateTime modificationTime,
       @NonNull @JsonProperty(value = "url", required = true) URL url) {
     this.id = id;
     this.url = url;
@@ -69,18 +67,8 @@ public final class VersionReference {
       throw new IllegalArgumentException("Illegal type: " + type, ex);
     }
 
-    try {
-      this.releaseTime = OffsetDateTime.parse(releaseTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-    } catch (DateTimeParseException ex) {
-      throw new IllegalArgumentException("Illegal releaseTime: " + releaseTime, ex);
-    }
-
-    try {
-      this.modificationTime = OffsetDateTime
-          .parse(modificationTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-    } catch (DateTimeParseException ex) {
-      throw new IllegalArgumentException("Illegal modificationTime: " + modificationTime, ex);
-    }
+    this.releaseTime = releaseTime;
+    this.modificationTime = modificationTime;
   }
 
   /**

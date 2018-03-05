@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.io.IOException;
@@ -116,8 +117,8 @@ public class Version implements RuleControlledResourceContainer {
       @NonNull @JsonProperty(value = "id", required = true) String id,
       @JsonProperty(value = "minimumLauncherVersion", required = true) int minimumLauncherVersion,
       @NonNull @JsonProperty(value = "type", required = true) String type,
-      @NonNull @JsonProperty(value = "releaseTime", required = true) String releaseTime,
-      @NonNull @JsonProperty(value = "time", required = true) String modificationTime,
+      @NonNull @JsonProperty(value = "releaseTime", required = true) OffsetDateTime releaseTime,
+      @NonNull @JsonProperty(value = "time", required = true) OffsetDateTime modificationTime,
       @NonNull @JsonProperty(value = "mainClass", required = true) String mainClass,
       @Nullable @JsonProperty("arguments") Map<String, List<ProgramArgument>> arguments,
       @NonNull @JsonProperty(value = "downloads", required = true) Map<String, Download> downloads,
@@ -129,9 +130,8 @@ public class Version implements RuleControlledResourceContainer {
     this.id = id;
     this.minimumLauncherVersion = minimumLauncherVersion;
     this.type = VersionType.valueOf(type.toUpperCase());
-    this.releaseTime = OffsetDateTime.parse(releaseTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-    this.modificationTime = OffsetDateTime
-        .parse(modificationTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    this.releaseTime = releaseTime;
+    this.modificationTime = modificationTime;
     this.mainClass = mainClass;
     this.assets = assets;
     this.assetIndex = assetIndex;
@@ -360,6 +360,7 @@ public class Version implements RuleControlledResourceContainer {
   public static Version read(@NonNull InputStream inputStream) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    mapper.registerModule(new JavaTimeModule());
     return mapper.readValue(inputStream, Version.class);
   }
 
@@ -388,6 +389,7 @@ public class Version implements RuleControlledResourceContainer {
   public static Version read(@NonNull Reader reader) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    mapper.registerModule(new JavaTimeModule());
     return mapper.readValue(reader, Version.class);
   }
 
