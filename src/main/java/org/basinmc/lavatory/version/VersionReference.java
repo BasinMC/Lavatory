@@ -17,6 +17,8 @@
 package org.basinmc.lavatory.version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.IOException;
@@ -41,7 +43,7 @@ public final class VersionReference {
   @JsonCreator
   public VersionReference(
       @NonNull @JsonProperty(value = "id", required = true) String id,
-      @NonNull @JsonProperty(value = "type", required = true) VersionType type,
+      @NonNull @JsonProperty(value = "type", required = true) @JsonFormat(with = Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES) VersionType type,
       @NonNull @JsonProperty(value = "releaseTime", required = true) OffsetDateTime releaseTime,
       @NonNull @JsonProperty(value = "time", required = true) OffsetDateTime modificationTime,
       @NonNull @JsonProperty(value = "url", required = true) URL url) {

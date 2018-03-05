@@ -17,6 +17,8 @@
 package org.basinmc.lavatory.version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Collections;
@@ -38,7 +40,7 @@ public class ProgramArgument extends AbstractRuleControlledResource {
 
   @JsonCreator
   private ProgramArgument(
-      @NonNull @JsonProperty(value = "value", required = true) List<String> value,
+      @NonNull @JsonProperty(value = "value", required = true) @JsonFormat(with = Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY) List<String> value,
       @NonNull @JsonProperty(value = "rules", required = true) Set<Rule> rules) {
     super(rules);
     this.value = value;

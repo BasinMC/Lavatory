@@ -162,7 +162,6 @@ public final class Manifest {
   @NonNull
   public static Manifest read(@NonNull InputStream inputStream) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     mapper.registerModule(new JavaTimeModule());
     return mapper.readValue(inputStream, Manifest.class);
   }
@@ -191,7 +190,6 @@ public final class Manifest {
   @NonNull
   public static Manifest read(@NonNull Reader reader) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     mapper.registerModule(new JavaTimeModule());
     return mapper.readValue(reader, Manifest.class);
   }

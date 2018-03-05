@@ -17,9 +17,9 @@
 package org.basinmc.lavatory.version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -30,7 +30,6 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,7 +78,7 @@ public class Version implements RuleControlledResourceContainer {
   public Version(
       @NonNull String id,
       int minimumLauncherVersion,
-      @NonNull VersionType type,
+      @NonNull @JsonFormat(with = Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES) VersionType type,
       @NonNull OffsetDateTime releaseTime,
       @NonNull OffsetDateTime modificationTime,
       @NonNull String mainClass,
@@ -117,7 +116,7 @@ public class Version implements RuleControlledResourceContainer {
   protected Version(
       @NonNull @JsonProperty(value = "id", required = true) String id,
       @JsonProperty(value = "minimumLauncherVersion", required = true) int minimumLauncherVersion,
-      @NonNull @JsonProperty(value = "type", required = true) VersionType type,
+      @NonNull @JsonProperty(value = "type", required = true) @JsonFormat(with = Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES) VersionType type,
       @NonNull @JsonProperty(value = "releaseTime", required = true) OffsetDateTime releaseTime,
       @NonNull @JsonProperty(value = "time", required = true) OffsetDateTime modificationTime,
       @NonNull @JsonProperty(value = "mainClass", required = true) String mainClass,
@@ -360,8 +359,6 @@ public class Version implements RuleControlledResourceContainer {
   @NonNull
   public static Version read(@NonNull InputStream inputStream) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
-    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     mapper.registerModule(new JavaTimeModule());
     return mapper.readValue(inputStream, Version.class);
   }
@@ -390,8 +387,6 @@ public class Version implements RuleControlledResourceContainer {
   @NonNull
   public static Version read(@NonNull Reader reader) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
-    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     mapper.registerModule(new JavaTimeModule());
     return mapper.readValue(reader, Version.class);
   }
