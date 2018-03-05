@@ -160,6 +160,38 @@ public class LibraryReference extends AbstractRuleControlledResource {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
+    LibraryReference that = (LibraryReference) o;
+    return Objects.equals(this.name, that.name) &&
+        Objects.equals(this.linuxNativesArtifact, that.linuxNativesArtifact) &&
+        Objects.equals(this.macNativesArtifact, that.macNativesArtifact) &&
+        Objects.equals(this.windowsNativesArtifact, that.windowsNativesArtifact) &&
+        Objects.equals(this.downloads, that.downloads) &&
+        Objects.equals(this.extractionConfiguration, that.extractionConfiguration);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), this.name, this.linuxNativesArtifact, this.macNativesArtifact,
+        this.windowsNativesArtifact, this.downloads, this.extractionConfiguration);
+  }
+
+  /**
    * Provides a map of downloadable artifacts along with their classifiers.
    */
   public static class DownloadMap {
