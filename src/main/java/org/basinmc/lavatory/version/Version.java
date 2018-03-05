@@ -106,12 +106,7 @@ public class Version implements RuleControlledResourceContainer {
         .collect(Collectors.toMap(
             LibraryReference::getName,
             (l) -> l,
-            (a, b) -> {
-              int priorityA = a.calculatePriority();
-              int priorityB = b.calculatePriority();
-
-              return priorityA >= priorityB ? a : b;
-            }
+            (a, b) -> a
         ));
     this.clientLoggerConfiguration = clientLoggerConfiguration;
   }
@@ -144,12 +139,7 @@ public class Version implements RuleControlledResourceContainer {
         .collect(Collectors.toMap(
             LibraryReference::getName,
             (l) -> l,
-            (a, b) -> {
-              int priorityA = a.calculatePriority();
-              int priorityB = b.calculatePriority();
-
-              return priorityA >= priorityB ? a : b;
-            }
+            (a, b) -> a
         ));
     this.clientLoggerConfiguration =
         loggerConfigurations == null ? null : loggerConfigurations.get("client");
