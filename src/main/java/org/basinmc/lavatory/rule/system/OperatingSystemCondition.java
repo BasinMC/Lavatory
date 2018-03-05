@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import org.basinmc.lavatory.ResolverContext;
 import org.basinmc.lavatory.rule.RuleCondition;
@@ -66,6 +67,16 @@ public class OperatingSystemCondition implements RuleCondition {
     }
 
     return true;
+  }
+
+  @NonNull
+  public Optional<OperatingSystem> getSystem() {
+    return Optional.ofNullable(this.system);
+  }
+
+  @NonNull
+  public Optional<Pattern> getVersion() {
+    return Optional.ofNullable(this.version);
   }
 
   /**

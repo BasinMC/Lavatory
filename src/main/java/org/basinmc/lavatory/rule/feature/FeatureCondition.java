@@ -18,6 +18,7 @@ package org.basinmc.lavatory.rule.feature;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -53,6 +54,11 @@ public class FeatureCondition implements RuleCondition {
   public boolean evaluate(@NonNull ResolverContext ctx) {
     return this.featureMap.entrySet().stream()
         .allMatch((e) -> ctx.isFeatureEnabled(e.getKey()) == e.getValue());
+  }
+
+  @NonNull
+  public Map<Feature, Boolean> getFeatureMap() {
+    return Collections.unmodifiableMap(this.featureMap);
   }
 
   /**

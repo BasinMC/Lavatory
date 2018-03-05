@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -62,6 +63,16 @@ public class Rule {
     }
 
     return Action.negate(this.action);
+  }
+
+  @NonNull
+  public Action getAction() {
+    return this.action;
+  }
+
+  @NonNull
+  public Set<RuleCondition> getConditions() {
+    return Collections.unmodifiableSet(this.conditions);
   }
 
   /**
