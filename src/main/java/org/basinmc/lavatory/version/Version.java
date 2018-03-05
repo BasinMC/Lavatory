@@ -396,7 +396,7 @@ public class Version implements RuleControlledResourceContainer {
    */
   @NonNull
   @Override
-  public RuleControlledResourceContainer reduce(@NonNull ResolverContext ctx) {
+  public Version reduce(@NonNull ResolverContext ctx) {
     return new Version(
         this.id,
         this.minimumLauncherVersion,
