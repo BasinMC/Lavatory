@@ -34,7 +34,8 @@ import org.basinmc.lavatory.rule.Rule;
  *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
-public class LibraryReference extends AbstractRuleControlledResource {
+public class LibraryReference extends AbstractRuleControlledResource implements
+    Comparable<LibraryReference> {
 
   private final String name;
 
@@ -95,6 +96,35 @@ public class LibraryReference extends AbstractRuleControlledResource {
         classifier != null ? Optional.ofNullable(this.downloads.classifiers.get(classifier))
             .orElseThrow(() -> new IllegalArgumentException(
                 "Illegal native artifact for windows: Artifact is missing")) : null;
+  }
+
+  /**
+   * <p>Calculates the priority of this reference.</p>
+   *
+   * <p>This method effectively identifies the definition precision of a library reference in order
+   * to evaluate which of two or more possible elements to choose in order to get the most
+   * information when a duplicate exists.</p>
+   *
+   * <p>While these  duplicates typically occur in their correct order (probably due to the fact
+   * that older launcher versions will discord library versions they do not know how to deal with),
+   * we're still comparing them according to this method to avoid future issues.</p>
+   *
+   * @return a priority (higher is better).
+   */
+  public int calculatePriority() {
+    return this.downloads.classifiers.size() + (this.downloads.artifact != null ? 1 : 0) + (
+        this.linuxNativesArtifact != null ? 1 : 0) + (this.macNativesArtifact != null ? 1 : 0) + (
+        this.windowsNativesArtifact != null ? 1 : 0) + (this.extractionConfiguration != null ? 1
+        : 0);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int compareTo(@NonNull LibraryReference libraryReference) {
+    return Math
+        .min(1, Math.max(-1, this.calculatePriority() - libraryReference.calculatePriority()));
   }
 
   /**
@@ -187,8 +217,9 @@ public class LibraryReference extends AbstractRuleControlledResource {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), this.name, this.linuxNativesArtifact, this.macNativesArtifact,
-        this.windowsNativesArtifact, this.downloads, this.extractionConfiguration);
+    return Objects
+        .hash(super.hashCode(), this.name, this.linuxNativesArtifact, this.macNativesArtifact,
+            this.windowsNativesArtifact, this.downloads, this.extractionConfiguration);
   }
 
   /**
