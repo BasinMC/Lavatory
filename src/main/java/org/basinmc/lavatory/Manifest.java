@@ -18,9 +18,7 @@ package org.basinmc.lavatory;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.IOException;
 import java.io.InputStream;
@@ -162,7 +160,7 @@ public final class Manifest {
   @NonNull
   public static Manifest read(@NonNull InputStream inputStream) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
+    mapper.findAndRegisterModules();
     return mapper.readValue(inputStream, Manifest.class);
   }
 
@@ -190,7 +188,7 @@ public final class Manifest {
   @NonNull
   public static Manifest read(@NonNull Reader reader) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
+    mapper.findAndRegisterModules();
     return mapper.readValue(reader, Manifest.class);
   }
 
