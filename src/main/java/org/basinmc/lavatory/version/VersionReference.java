@@ -38,35 +38,16 @@ public final class VersionReference {
   private final OffsetDateTime modificationTime;
   private final URL url;
 
-  public VersionReference(
-      @NonNull String id,
-      @NonNull VersionType type,
-      @NonNull OffsetDateTime releaseTime,
-      @NonNull OffsetDateTime modificationTime,
-      @NonNull URL url) {
-    this.id = id;
-    this.type = type;
-    this.releaseTime = releaseTime;
-    this.modificationTime = modificationTime;
-    this.url = url;
-  }
-
   @JsonCreator
-  protected VersionReference(
+  public VersionReference(
       @NonNull @JsonProperty(value = "id", required = true) String id,
-      @NonNull @JsonProperty(value = "type", required = true) String type,
+      @NonNull @JsonProperty(value = "type", required = true) VersionType type,
       @NonNull @JsonProperty(value = "releaseTime", required = true) OffsetDateTime releaseTime,
       @NonNull @JsonProperty(value = "time", required = true) OffsetDateTime modificationTime,
       @NonNull @JsonProperty(value = "url", required = true) URL url) {
     this.id = id;
     this.url = url;
-
-    try {
-      this.type = VersionType.valueOf(type.toUpperCase());
-    } catch (IllegalArgumentException ex) {
-      throw new IllegalArgumentException("Illegal type: " + type, ex);
-    }
-
+    this.type = type;
     this.releaseTime = releaseTime;
     this.modificationTime = modificationTime;
   }
